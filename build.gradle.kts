@@ -1,30 +1,14 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
-    id("io.gitlab.arturbosch.detekt") version "1.23.6"
+    kotlin("jvm")
 }
 
-group = "cl.ravenhill"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
+allprojects {
+    group = "libraries-assignments-kt"
+    version = extra["libraries-assignments-kt.version"] as String
 }
 
-val jaktVersion = "1.5.0"
-val kotestVersion = "5.8.0"
-
-dependencies {
-    implementation(kotlin("reflect"))
-    implementation("cl.ravenhill:strait-jakt:$jaktVersion")
-    testImplementation("io.kotest:kotest-property:$kotestVersion")
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-framework-datatest:$kotestVersion")
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-
-kotlin {
-    jvmToolchain(21)
+subprojects {
+    repositories {
+        mavenCentral()
+    }
 }
