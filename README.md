@@ -1,4 +1,77 @@
+# Análisis estático
+
+Asegúrese de que su código no tenga errores de análisis estático. Para verificarlo, ejecute el siguiente comando:
+
+```bash
+# Unix
+./gradlew detekt
+```
+
+```powershell
+# Windows
+.\gradlew.bat detekt
+```
+
+Si el comando se ejecuta sin errores, no se mostrará ninguna salida. Si hay errores, se mostrarán en la consola.
+
+# Organización del Código
+
+Organice su proyecto en subproyectos de Gradle para separar las diferentes partes de cada tarea. Cada tarea debe tener 
+su propio subproyecto con su código y pruebas asociadas. Asegúrese de que cada subproyecto tenga su propio `build.gradle.kts`.
+
+La estructura de directorios de su proyecto debe verse así:
+
+```
+tareas
+├── tarea1
+│   ├── src
+│   │   ├── main
+│   │   │   └── kotlin
+│   │   └── test
+│   │       └── kotlin
+│   └── build.gradle.kts
+├── tarea2
+│   ├── src
+│   │   ├── main
+│   │   │   └── kotlin
+│   │   └── test
+│   │       └── kotlin
+│   └── build.gradle.kts
+...
+├── gradle.properties
+├── settings.gradle.kts
+└── build.gradle.kts
+```
+
+Cada subproyecto debe estar organizado en paquetes de Kotlin que reflejen la pregunta que se está resolviendo. Por ejemplo, si está resolviendo la pregunta P1 de la Tarea 1, la estructura de paquetes podría ser algo así:
+
+```
+tareas
+├── tarea1
+│   ├── src
+│   │   ├── main
+│   │   │   └── kotlin
+│   │   │       └── nullsafety
+│   │   │           ...
+...
+```
+
+
+# Documentación
+
+Asegúrese de que su código esté bien documentado. Cada clase, función y propiedad debe tener una descripción que explique su propósito y cómo se usa.
+Utilice comentarios de estilo KDoc para documentar su código.
+
+# Publicación de la Tarea
+
+Su tarea debe publicarse en un repositorio de GitHub Classroom. El repositorio debe incluir su código y un release con su(s) librería(s) compiladas y su documentación.
+
+Opcionalmente, puede publicar su librería en GitHub Packages para optar por una bonificación de 0.3 puntos.
+
+---
+
 # Tarea 1 
+
 
 Resuelva 4 de 5 ejercicios propuestos. Puede elegir los ejercicios que prefiera excepto por la P5, que es
 obligatoria. Cada ejercicio tiene un objetivo específico y se enfoca en diferentes aspectos de la programación.
@@ -157,3 +230,308 @@ _Hint: Considera implementar interfaces con métodos predeterminados donde sea a
 
 Menciona una posible situación de "problema del diamante" que podría surgir en el diseño de este sistema, cómo se podría 
 resolver, y que implicaciones tendría en la implementación.
+
+---
+
+# Tarea 2
+
+Resuelva 4 de 5 ejercicios propuestos. Puede elegir los ejercicios que prefiera excepto por la P1, que es
+obligatoria. Cada ejercicio tiene un objetivo específico y se enfoca en diferentes aspectos de la programación.
+
+## P1) [1.5 pts] TDD y Data Driven Testing: Calculadora de Descuentos para una Tienda en Línea
+
+**Objetivo del Ejercicio:**
+Implementa y prueba una función que calcula el precio final de un producto después de aplicar varios posibles 
+descuentos. Utiliza TDD para guiar el desarrollo y luego emplea data-driven testing para validar la función con varios 
+escenarios de prueba.
+
+**Entregables**
+- Implementación de la función `calcularPrecioFinal(precioBase: Double, codigoDescuento: String?): Double`.
+- Pruebas unitarias que cubran los casos de prueba definidos.
+- Un documento que muestre tus pasos de desarrollo, incluyendo las fases fail, pass, y refactor (pueden ser slides, un 
+  documento de texto, etc.).
+
+#### Descripción del Problema
+
+Supongamos que estás ayudando a desarrollar el sistema de una tienda en línea. Necesitas escribir una función 
+`calcularPrecioFinal(precioBase: Double, codigoDescuento: Descuento?): Double` que toma el precio base de un producto y 
+un código de descuento opcional definido con clases selladas o enumeraciones. El precio final se calcula aplicando un 
+descuento. Los códigos de descuento y sus respectivos descuentos son:
+
+- `"Desc10"`: 10% de descuento
+- `"Desc20"`: 20% de descuento
+- `"Desc30"`: 30% de descuento
+- `null`: Sin descuento
+
+## P2) [1.5 pts] Aserciones: Matchers
+
+### Parte 1: Matcher personalizado
+
+Implementa un matcher personalizado `isAlphaNumeric` que verifica si una cadena contiene solo caracteres alfanuméricos
+(letras y números) y no contiene espacios en blanco.
+
+La función debe tener la siguiente firma:
+
+```kotlin
+fun isAlphaNumeric(): Matcher<String>
+```
+
+Proporciona un ejemplo de uso de este matcher en una prueba unitaria.
+
+### Parte 2: Matcher composicional
+
+Implementa una función `matchAtLeast` que toma una cantidad `k` y una cantidad variable de matchers y devuelve un 
+matcher que verifica que un valor coincida con al menos `k` de los matchers proporcionados.
+
+La función debe tener la siguiente firma:
+
+```kotlin
+matchAtLeast(k: Int, vararg matchers: Matcher<String>): Matcher<String> 
+```
+
+### Ejemplo de Uso
+
+```kotlin
+val isValidPassword = matchAtLeast(
+   3,
+   containADigit(),
+   contain(Regex("[a-z]")),
+   contain(Regex("[A-Z]")),
+   haveMinLength(16),
+   isAlphanumeric()
+))
+```
+
+## P3) [1.5 pts] Funciones de alto orden: Procesamiento de Datos de Ventas
+
+### Ejercicio: Análisis de Registro de Ventas
+
+**Objetivo del Ejercicio:**
+Implementa las funciones de alto orden `groupBy`, `sumOf`, y `maxByOrNull` desde cero y utilizalas para analizar un 
+conjunto de datos de ventas, identificando patrones y estadísticas clave.
+
+**Descripción del Ejercicio:**
+Supón que tienes un registro de ventas de varios productos en una tienda durante un mes, con cada venta incluyendo el 
+nombre del producto, la cantidad vendida, y el precio por unidad. Los estudiantes deberán implementar las funciones
+necesarias para procesar estos datos y responder a preguntas específicas sobre las ventas.
+
+#### Parte 1: Definición de la Clase y Datos de Ejemplo
+
+1. **Clase `Venta`**:
+   Define una clase `Venta` con tres propiedades: `producto: String`, `cantidad: Int`, y `precioPorUnidad: Double`.
+
+2. **Lista de Ventas de Ejemplo**:
+   ```kotlin
+   val ventas = listOf(
+       Venta("Manzanas", 150, 0.75),
+       Venta("Bananas", 100, 0.50),
+       Venta("Naranjas", 80, 0.90),
+       Venta("Peras", 120, 0.85),
+       Venta("Manzanas", 200, 0.75)
+   )
+   ```
+
+#### Parte 2: Implementación de Funciones de Alto Orden
+
+1. **Implementar `miGroupBy`**:
+   - Agrupa elementos de la lista según un criterio específico proporcionado por una función lambda.
+
+```kotlin
+data class Libro(val titulo: String, val autor: String, val genero: String)
+
+fun agruparLibrosPorGenero(libros: List<Libro>): Map<String, List<Libro>> = miGroupBy(libros) { it.genero }
+
+// Uso
+val libros = listOf(
+    Libro("1984", "George Orwell", "Distopía"),
+    Libro("Fahrenheit 451", "Ray Bradbury", "Distopía"),
+    Libro("El hobbit", "J.R.R. Tolkien", "Fantasía")
+)
+
+val librosPorGenero = agruparLibrosPorGenero(libros)
+println(librosPorGenero)
+// Output: {Distopía=[Libro(titulo=1984, autor=George Orwell, genero=Distopía), Libro(titulo=Fahrenheit 451, autor=Ray Bradbury, genero=Distopía)], Fantasía=[Libro(titulo=El hobbit, autor=J.R.R. Tolkien, genero=Fantasía)]}
+```
+
+2. **Implementar `miSumOf`**:
+   - Suma los elementos de una lista transformados por una función lambda.
+
+```kotlin
+data class Transaccion(val monto: Double, val categoria: String)
+
+fun sumarGastos(transacciones: List<Transaccion>, categoria: String): Double {
+   val filtradas = transacciones.filter { it.categoria == categoria }
+   return miSumOf(filtradas) { it.monto }
+}
+
+// Uso
+val transacciones = listOf(
+   Transaccion(100.0, "Comida"),
+   Transaccion(150.0, "Comida"),
+   Transaccion(200.0, "Entretenimiento")
+)
+
+val totalComida = sumarGastos(transacciones, "Comida")
+println("Gasto total en Comida: $totalComida")
+// Output: Gasto total en Comida: 250.0
+```
+
+3. **Implementar `miMaxByOrNull`**:
+   - Encuentra el elemento máximo de una lista basado en un criterio dado por una función lambda.
+
+```kotlin
+data class Empleado(val nombre: String, val ventas: Int)
+
+fun encontrarTopVendedor(empleados: List<Empleado>): Empleado? {
+   return miMaxByOrNull(empleados) { it.ventas }
+}
+
+// Uso
+val empleados = listOf(
+   Empleado("Alice", 300),
+   Empleado("Bob", 400),
+   Empleado("Charlie", 350)
+)
+
+val topVendedor = encontrarTopVendedor(empleados)
+println("Top vendedor: ${topVendedor?.nombre}")
+// Output: Top vendedor: Bob
+```
+
+#### Parte 3: Uso de Funciones para Análisis de Ventas
+
+**Tarea**: Usar las funciones `miGroupBy`, `miSumOf`, y `miMaxByOrNull` para:
+- Calcular el total de ingresos por cada tipo de producto.
+- Determinar el producto que generó más ingresos.
+
+_Puedes utilizar las funciones `map` y `filter` definidas en cátedra._
+
+## P4) Recursión Mutua con el Método del Trampolín
+
+#### Descripción del Ejercicio
+
+Implementa dos funciones mutuamente recursivas utilizando el método del trampolín para evitar problemas de 
+desbordamiento de pila (stack overflow). Las funciones simularán un juego de ping-pong entre dos jugadores. Cada jugador
+tendrá un número limitado de movimientos antes de detenerse.
+
+#### Objetivos del Ejercicio
+
+1. Implementar dos funciones mutuamente recursivas `ping` y `pong`.
+2. Utilizar el método del trampolín para gestionar la recursión y evitar desbordamiento de pila.
+3. Simular un intercambio de "ping" y "pong" entre los jugadores hasta que se alcance un número máximo de movimientos.
+4. Imprimir cada movimiento.
+
+### Salida Esperada
+
+```text
+Pong! 5
+Ping! 4
+Pong! 3
+Ping! 2
+Pong! 1
+```
+
+## P5) Transformar una Función Impura en Pura
+
+### Descripción del Ejercicio
+
+Se te proporciona una función impura que realiza múltiples operaciones con efectos secundarios, como manipular variables
+globales y realizar lecturas/escrituras a una base de datos simulada. Tu tarea será transformar esta función en una 
+función pura, eliminando todos los efectos secundarios y asegurando que la salida de la función dependa únicamente de 
+sus entradas.
+
+### Función Impura Proporcionada
+
+```kotlin
+var currentUser: String? = null
+val database = mutableMapOf<String, Int>()
+
+fun impureUpdateUser(name: String, score: Int) {
+    currentUser = name
+    if (database.containsKey(name)) {
+        database[name] = database[name]!! + score
+    } else {
+        database[name] = score
+    }
+    println("Updated $name's score to ${database[name]}")
+}
+```
+
+---
+
+# Tarea 3
+
+## P1) Generics: 
+
+## P2) Generadores Pseudo-Aleatorios: Generador de Divisores
+
+### Descripción del Ejercicio
+
+Implementa un generador arbitrario utilizando generadores pseudo-aleatorios que genere divisores de un número entero dado.
+
+La firma de la función debe ser:
+
+```kotlin
+fun arbDivisor(number: Int): Arb<Int>
+```
+
+### Instrucciones
+
+1. **Definición de la Función**: Implementa la función `arbDivisor` que toma un número entero `number` como argumento y 
+   devuelve un generador (`Arb<Int>`) que produce divisores de `number`.
+
+2. **Generación de Divisores**:
+   - La función debe generar divisores tanto positivos como negativos de `number`.
+   - Asegúrate de incluir 1 y el mismo `number` como posibles divisores.
+
+3. **Pruebas de Propiedades**: Escribe pruebas que verifiquen que todos los números generados por `arbDivisor` son 
+   realmente divisores de `number`.
+
+## P3) Propiedades: Generación de Listas Ordenadas
+
+### Descripción del Ejercicio
+
+Implementa un generador arbitrario que genere listas de enteros ordenadas de forma ascendente.
+
+Los valores generados deben considerar los casos en que:
+- La lista contiene el valor `Int.MIN_VALUE`.
+- La lista contiene el valor `Int.MAX_VALUE`.
+- La lista contiene valores repetidos.
+
+No consideres el caso de listas vacías y debe tener entre 1 y 100 elementos.
+
+La distribución debe ser uniforme y no debe haber sesgo hacia listas más cortas o más largas.
+Específicamente:
+- Ningún tamaño de lista debe tener más de un 5% de probabilidad de ser generado.
+- Al menos un 40% de las listas generadas deben contener el valor `Int.MIN_VALUE`.
+- Al menos un 40% de las listas generadas deben contener el valor `Int.MAX_VALUE`.
+- Al menos un 30% de las listas generadas deben contener valores repetidos.
+
+Incluye una implementación de la función `isSorted` que verifica si una lista de enteros está ordenada de forma ascendente.
+
+### Ejemplo de Uso
+
+```kotlin
+class IsSortedTest : FreeSpec({
+    "A sorted list" - {
+        "should be sorted" {
+            checkAll(arbSortedList()) { input ->
+                collect(input.size)
+                collect("Int.MIN_VALUE?", input.first() == Int.MIN_VALUE)
+                collect("Int.MAX_VALUE?", input.last() == Int.MAX_VALUE)
+                collect("Repeated values?", input.size != input.toSet().size)
+                input.isSorted().shouldBeTrue()
+            }
+        }
+    }
+})
+```
+
+### Consejos
+
+1. Utiliza generalización para comenzar de un test basado en ejemplos y luego generalizarlo a un test basado en propiedades.
+2. Utiliza `collect` para recopilar información sobre los valores generados y ayudarte a depurar problemas.
+3. Puede serte de utilidad para depurar el generador el uso del matcher `shouldBeMonotonicallyIncreasing` para verificar que los valores generados son crecientes.
+4. Para verificar si una lista está ordenada puede serte de utilidad el uso de la función `zipWithNext` para comparar cada elemento con el siguiente.
+5. Utiliza generadores recursivos para extender la lista hacia la izquierda y la derecha. Es decir, si generas una lista de tamaño `n`, puedes generar una lista de tamaño `n + 1` agregando un elemento al principio o al final.
+6. Utiliza el generador `Arb.choose` para ajustar la probabilidad de extender la lista hacia la izquierda o la derecha.
