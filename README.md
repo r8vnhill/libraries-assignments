@@ -1,3 +1,13 @@
+# Índice
+
+- [Análisis estático](#análisis-estático)
+- [Organización del Código](#organización-del-código)
+- [Documentación](#documentación)
+- [Publicación de la Tarea](#publicación-de-la-tarea)
+- [Tarea 1](#tarea-1)
+- [Tarea 2](#tarea-2)
+- [Tarea 3](#tarea-3)
+
 # Análisis estático
 
 Asegúrese de que su código no tenga errores de análisis estático. Para verificarlo, ejecute el siguiente comando:
