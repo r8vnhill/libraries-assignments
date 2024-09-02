@@ -8,9 +8,13 @@
 - [Tarea 2](#tarea-2)
 - [Tarea 3](#tarea-3)
 
-# Análisis estático
+A continuación se presentan las normas que debes seguir cada una de sus tareas, no cumplir con
+alguna de estas normas implicará una penalización sobre la nota final.
 
-Asegúrese de que su código no tenga errores de análisis estático. Para verificarlo, ejecute el siguiente comando:
+# Análisis estático [0.5 pts]
+
+Asegúrate de que tu código no tenga errores de análisis estático. Para verificarlo, ejecute el 
+siguiente comando:
 
 ```bash
 # Unix
@@ -24,12 +28,13 @@ Asegúrese de que su código no tenga errores de análisis estático. Para verif
 
 Si el comando se ejecuta sin errores, no se mostrará ninguna salida. Si hay errores, se mostrarán en la consola.
 
-# Organización del Código
+# Organización del Código [0.5 pts]
 
-Organice su proyecto en subproyectos de Gradle para separar las diferentes partes de cada tarea. Cada tarea debe tener 
-su propio subproyecto con su código y pruebas asociadas. Asegúrese de que cada subproyecto tenga su propio `build.gradle.kts`.
+Organiza tu proyecto en subproyectos de Gradle para separar las diferentes partes de cada tarea.
+Cada tarea debe tener su propio subproyecto con su código y pruebas asociadas. Asegúrate de que cada
+subproyecto tenga su propio `build.gradle.kts`.
 
-La estructura de directorios de su proyecto debe verse así:
+La estructura de directorios de tu proyecto debe verse así:
 
 ```
 tareas
@@ -53,7 +58,9 @@ tareas
 └── build.gradle.kts
 ```
 
-Cada subproyecto debe estar organizado en paquetes de Kotlin que reflejen la pregunta que se está resolviendo. Por ejemplo, si está resolviendo la pregunta P1 de la Tarea 1, la estructura de paquetes podría ser algo así:
+Cada subproyecto debe estar organizado en paquetes de Kotlin que reflejen la pregunta que se está
+resolviendo. Por ejemplo, si está resolviendo la pregunta P1 de la Tarea 1, la estructura de
+paquetes podría ser algo así:
 
 ```
 tareas
@@ -67,16 +74,19 @@ tareas
 ```
 
 
-# Documentación
+# Documentación [1.0 pts]
 
-Asegúrese de que su código esté bien documentado. Cada clase, función y propiedad debe tener una descripción que explique su propósito y cómo se usa.
-Utilice comentarios de estilo KDoc para documentar su código.
+Asegúrate de que tu código esté bien documentado. Cada clase, función y propiedad pública debe tener
+una descripción que explique su propósito y cómo se usa.
+Utiliza comentarios de estilo KDoc para documentar tu código.
 
-# Publicación de la Tarea
+# Publicación de la Tarea [0.5 pts]
 
-Su tarea debe publicarse en un repositorio de GitHub Classroom. El repositorio debe incluir su código y un release con su(s) librería(s) compiladas y su documentación.
+Tu tarea debe publicarse en un repositorio de GitHub Classroom. El repositorio debe incluir tu
+código y un release con tu(s) librería(s) compiladas y su documentación.
 
-Opcionalmente, puede publicar su librería en GitHub Packages para optar por una bonificación de 0.3 puntos.
+Opcionalmente, puedes publicar tu librería en GitHub Packages para optar por una bonificación de 0.3
+puntos.
 
 ---
 
@@ -137,14 +147,29 @@ versiones y los grupos a los que pertenecen, y que lo escriba en un archivo de t
 
 #### Paso 1: Configuración del Proyecto
 
-Como base, utiliza el archivo `build.gradle` incluido en el proyecto. Asegúrate de que el proyecto tenga dependencias
+Tu solución debiera estar en el archivo `tarea1/build.gradle`. Asegúrate de que el proyecto tenga dependencias
 definidas en el bloque `dependencies` para que la tarea tenga algo que reportar.
+
+Para esto, puedes utilizar las siguientes dependencias:
+
+```kotlin
+dependencies {
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-framework-datatest:$kotestVersion")
+}
+```
+
 
 #### Paso 2: Escribir la Tarea en Gradle
 
-Agrega una tarea llamada `dependencyReport` al archivo `build.gradle` que recorra las configuraciones del proyecto
-utilizando `configurations`. Dentro de la tarea, itera sobre las dependencias y escribe los detalles de cada una en un
+Agrega una tarea llamada `dependencyReport` al archivo `tarea1/build.gradle` que recorra las 
+configuraciones del proyecto utilizando `configurations`. Dentro de la tarea, itera sobre las dependencias y escribe los detalles de cada una en un
 archivo de texto, esto se puede hacer accediendo a la propiedad `allDependencies` de cada configuración.
+
+Recuerda agregar la tarea a un grupo y darle una descripción significativa.
 
 #### Paso 3: Ejecutar la Tarea
 
@@ -161,7 +186,7 @@ Prueba la tarea ejecutando
 ## P3) [1.5 pts] OOP: Sistema de Gestión de Recetas de Cocina
 
 **Objetivo del Ejercicio:**
-Desarrollar un sistema para almacenar y manejar recetas de cocina usando data classes para las recetas y funciones de
+Desarrollar un sistema para almacenar y manejar recetas de cocina usando _data classes_ para las recetas y funciones de
 extensión para proporcionar métodos adicionales, como calcular el tiempo total de cocina y verificar si una receta 
 contiene ciertos ingredientes.
 
@@ -185,13 +210,14 @@ se hará primero usando una enumeración y luego usando clases selladas.
 
 ### Especificaciones del Sistema de la Máquina de Café
 
-1. **Estados de la Máquina de Café:**
+1. **Máquina de Café:** Crea una clase para representar una máquina de café que puede estar en varios estados. 
+2. **Estados de la Máquina de Café:**
    - **Esperando**: La máquina está esperando que el usuario elija una acción.
    - **Preparando**: La máquina está preparando el café.
    - **Sirviendo**: La máquina está sirviendo el café.
    - **NecesitaLimpieza**: La máquina necesita ser limpiada después de servir una cierta cantidad de cafés.
 
-2. **Transiciones de Estado:**
+3. **Transiciones de Estado:** Cada uno de estas transiciones debe estar definida como un método en la enumeración o clase sellada. Para esto, cada función debe recibir la máquina de café y modificar su estado interno. Considera que la máquina de café comienza en el estado **Esperando**.
    - De **Esperando** a **Preparando** cuando el usuario selecciona "preparar café".
    - De **Preparando** a **Sirviendo** una vez que el café está listo.
    - De **Sirviendo** a **Esperando** para preparar otro café o a **NecesitaLimpieza** después de servir 5 cafés.
@@ -470,6 +496,86 @@ fun impureUpdateUser(name: String, score: Int) {
 ---
 
 # Tarea 3
+
+## P1) Mónadas: Mónada de estado
+
+### Descripción del Concepto
+
+Una **Mónada de Estado** permite manejar el estado en secuencias de operaciones de manera funcional, evitando efectos secundarios. En lugar de modificar el estado global directamente, el estado se pasa de una función a otra dentro de una estructura que lo encapsula.
+
+### Requisitos del Ejercicio
+
+1. **Implementación de la Mónada de Estado**:
+   - Crea una clase `State<S, A>` que encapsule una función que toma un estado inicial de tipo `S` y devuelve un par `(A, S)` donde `A` es el valor calculado y `S` es el nuevo estado.
+
+2. **Operaciones Básicas**:
+   - Implementa métodos para encadenar operaciones que manejan el estado (`flatMap`) y para mapear valores (`map`).
+   - Implementa métodos para obtener (`get`) y establecer (`set`) el estado.
+   - Implementa un método para crear una mónada de estado con un valor puro (`pure`).
+
+3. **Simulación de una Máquina de Sumar y Multiplicar**:
+   - Define funciones que utilicen la Mónada de Estado para sumar y multiplicar un estado entero.
+
+### Código base
+    
+```kotlin
+class State<S, A>(val run: (S) -> Pair<A, S>) {
+    fun <B> flatMap(f: (A) -> State<S, B>): State<S, B> = TODO()
+    fun <B> map(f: (A) -> B): State<S, B> = TODO()
+
+    companion object {
+        fun <S> get(): State<S, S> = TODO()
+        fun <S> set(s: S): State<S, Unit> = TODO()
+        fun <S, A> pure(a: A): State<S, A> = TODO()
+    }
+}
+```
+
+### Ejemplo de Uso
+
+Supón que tienes las siguientes operaciones y quieres encadenarlas utilizando una Mónada de Estado:
+
+```kotlin
+fun add(x: Int): State<Int, Unit> = State { state ->
+   Unit to state + x
+}
+
+fun multiply(x: Int): State<Int, Unit> = State { state ->
+   Unit to state * x
+}
+
+val program = State.get<Int>().flatMap { state ->
+   add(10).flatMap {
+      multiply(2).flatMap {
+         State.get() // Obtiene el estado actual
+      }
+   }
+}
+
+// Ejecución de la secuencia con un estado inicial de 0
+val (result, finalState) = program.run(0)
+println("Resultado final: $result, Estado final: $finalState")
+```
+
+Este código debería imprimir:
+
+```
+Resultado final: 20, Estado final: 20
+```
+
+### Actividades
+
+1. **Implementación de la Mónada de Estado**:
+   - Implementa la clase `State<S, A>` en Kotlin.
+   - Asegúrate de que los métodos `flatMap` y `map` permitan encadenar funciones que manipulen el estado.
+
+2. **Simulación de la Máquina de Sumar y Multiplicar**:
+   - Utiliza la Mónada de Estado para implementar funciones que sumen y multipliquen el estado.
+   - Encadena estas operaciones y verifica que el estado se pase y modifique correctamente a lo largo de la secuencia.
+
+3. **Pruebas y Verificación**:
+   - Verifica que tu implementación cumpla con las propiedades de las mónadas (identidad y asociatividad).
+   - Asegúrate de que las operaciones se pueden encadenar correctamente, y que el estado se manipula de forma adecuada.
 
 ## P1) Generics: 
 
